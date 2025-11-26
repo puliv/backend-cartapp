@@ -36,4 +36,26 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody UserRequest request) { // ⬅️ Cambiado el nombre a 'login'
+        try {
+            // **1. Lógica de Autenticación:**
+            // Llama a un método del servicio que intenta autenticar al usuario
+            // Esto debería verificar el correo y la contraseña (usando hashing)
+            User authenticatedUser = service.authenticate(request.getMail(), request.getPass());
+
+            if (authenticatedUser != null) {
+                // 2. Si es exitoso, devuelve 200 OK y la información del usuario (o un token)
+                return ResponseEntity.ok(authenticatedUser);
+            } else {
+                // 3. Si las credenciales son incorrectas, devuelve 401 Unauthorized
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Credenciales inválidas.");
+            }
+
+        } catch (Exception e) {
+            // 4. Manejo de errores internos del servidor (e.g., problemas de DB)
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+        }
+    }
 }
