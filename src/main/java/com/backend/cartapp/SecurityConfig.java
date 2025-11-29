@@ -22,8 +22,8 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 // 2. CONFIGURAR LA AUTORIZACIÓN:
                 .authorizeHttpRequests(auth -> auth
-                        // ➡️ Estos endpoints deben ser totalmente públicos ⬅️
-                        .requestMatchers("/login", "/signup", "/user", "/products").permitAll()
+                        //  Estos endpoints deben ser totalmente públicos
+                        .requestMatchers("/login", "/signup", "/user", "/products", "/images/**").permitAll()
                         // 3. El resto de peticiones requieren autenticación
                         .anyRequest().authenticated()
                 );
